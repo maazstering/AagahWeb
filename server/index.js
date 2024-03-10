@@ -1,6 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose'
 import cors from 'cors';
+//for directory sync
+//bar bar har file ko import na karna para 
+import {readdirSync} from 'fs';
+
+
 const morgan = require('morgan');
 
 require("dotenv").config();
@@ -32,7 +37,7 @@ const port = process.env.PORT || 8000;
 
 app.listen(port, () => console.log(`The server is running at port ${port}`));
 
-//routes 
-app.post('/api/signup', (req,res)=> {
-    console.log("Register Endpoint =>", req.body);
-})
+//autoload routes 
+//this will automatically help us in file managmet by auto saving routes 
+
+readdirSync('./routes').map((r) => app.use('/api', require(`./routes/${r}`)));
